@@ -87,10 +87,16 @@ const PostWidget = ({ }) => {
 
   const getPost = async () => {
     try {
-      const response = await axios.get(
+      const response = await fetch(
         "http://44.219.155.152:8080/admin/filaPilha/noticias"
       );
-      setPostagens(response.data);
+  
+      if (!response.ok) {
+        throw new Error(`Erro ao obter as postagens: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setPostagens(data);
     } catch (error) {
       console.log("Erro ao obter as postagens:", error);
     }
@@ -124,7 +130,7 @@ const PostWidget = ({ }) => {
 
   useEffect(() => {
     getPost();
-  }, []);
+  },[]);
 
   const handleComentarioClick = (id) => {
     setComentarioId(id === comentarioId ? null : id);
