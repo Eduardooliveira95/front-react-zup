@@ -88,7 +88,7 @@ const Form = () => {
       };
 
       const response = await axios.post(
-        "http://44.219.155.152:8080/cadastro/user/comum",
+        "https://44.219.155.152:8080/cadastro/user/comum",
         requestData
       );
       const savedUser = response.data;
@@ -110,7 +110,7 @@ const Form = () => {
 
     try {
       const response = await axios.post(
-        "http://44.219.155.152:8080/login/logar",
+        "https://44.219.155.152:8080/login/logar",
         requestData
       );
       const loggedInUser = response.data;
