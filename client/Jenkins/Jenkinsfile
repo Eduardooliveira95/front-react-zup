@@ -1,0 +1,84 @@
+#!/usr/bin/env groovy
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven_Zup'
+    }
+
+    stages {
+        stage('Install Maven') {
+            steps {
+                script {
+                    // Verifica se o Maven já está instalado
+                    def mavenHome = tool 'Maven_Zup' ?: ''
+                    def mavenVersion = '3.6.2'
+
+                    if (mavenHome == '') {
+                        echo "Maven não encontrado. Baixando e instalando..."
+
+                        // Baixa o Maven
+                        sh "curl -sL http://apache.mirror.gtcomm.net/maven/maven-3/${mavenVersion}/binaries/apache-maven-${mavenVersion}-bin.tar.gz -o maven.tar.gz"
+
+                        // Extrai o Maven
+                        sh 'tar -xf maven.tar.gz'
+
+                        // Renomeia a pasta extraída para facilitar o acesso
+                        sh "mv apache-maven-${mavenVersion} maven"
+
+                        // Define a variável M2_HOME
+                        env.M2_HOME = "${WORKSPACE}/maven"
+
+                        // Adiciona o Maven ao PATH
+                        env.PATH = "${env.M2_HOME}/bin:${env.PATH}"
+
+                        // Configura o Maven
+                        sh 'mvn --version'
+                    } else {
+                        echo "Maven já instalado em: ${mavenHome}"
+                    }
+                }
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'mvn clean package'
+                }
+            }
+        }
+
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    //def remoteHost = '<IP-DA-EC2>'
+                    def remoteHost = '3.87.160.16'
+                    // def remoteUser = 'ec2-user'
+                    def remoteUser = 'ec2-user'
+                    //def keyPath = '/path/to/private/key.pem'
+                    def keyPath =  '/var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem'
+                    //def remoteDir = '~/apl-back-zup'
+                    def remoteDir = '/root/apl-back-zup'
+
+                    // Altera as permissões da chave
+                   // sh "chmod 600 ${keyPath}"
+
+                   sh """
+                   ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c "cd ${remoteDir} && git fetch && git pull"'
+                   """
+
+//sh "ssh -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
+                    //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
+                }
+            }
+        }
+    }
+}
