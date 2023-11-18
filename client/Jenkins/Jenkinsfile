@@ -18,10 +18,10 @@ pipeline {
                     if (nodeHome == '') {
                         echo "Node não encontrado. Baixando e instalando..."
 
-                        // Baixa o Maven
+                        // Baixa o Node
                         sh "curl -sL http://apache.mirror.gtcomm.net/maven/maven-3/${nodeVersion}/binaries/apache-maven-${nodeVersion}-bin.tar.gz -o maven.tar.gz"
 
-                        // Extrai o Maven
+                        // Extrai o Node
                         sh 'tar -xf maven.tar.gz'
 
                         // Renomeia a pasta extraída para facilitar o acesso
