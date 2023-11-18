@@ -4,28 +4,28 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven_Zup'
+        maven 'Node_Zup'
     }
 
     stages {
-        stage('Install Maven') {
+        stage('Install NodeJs') {
             steps {
                 script {
                     // Verifica se o Maven já está instalado
-                    def mavenHome = tool 'Maven_Zup' ?: ''
-                    def mavenVersion = '3.6.2'
+                    def nodeHome = tool 'Node_Zup' ?: ''
+                    def nodeVersion = '21.2.0'
 
-                    if (mavenHome == '') {
-                        echo "Maven não encontrado. Baixando e instalando..."
+                    if (nodeHome == '') {
+                        echo "Node não encontrado. Baixando e instalando..."
 
                         // Baixa o Maven
-                        sh "curl -sL http://apache.mirror.gtcomm.net/maven/maven-3/${mavenVersion}/binaries/apache-maven-${mavenVersion}-bin.tar.gz -o maven.tar.gz"
+                        sh "curl -sL http://apache.mirror.gtcomm.net/maven/maven-3/${nodeVersion}/binaries/apache-maven-${nodeVersion}-bin.tar.gz -o maven.tar.gz"
 
                         // Extrai o Maven
                         sh 'tar -xf maven.tar.gz'
 
                         // Renomeia a pasta extraída para facilitar o acesso
-                        sh "mv apache-maven-${mavenVersion} maven"
+                        sh "mv apache-maven-${nodeVersion} maven"
 
                         // Define a variável M2_HOME
                         env.M2_HOME = "${WORKSPACE}/maven"
@@ -34,9 +34,9 @@ pipeline {
                         env.PATH = "${env.M2_HOME}/bin:${env.PATH}"
 
                         // Configura o Maven
-                        sh 'mvn --version'
+                        sh 'node -version'
                     } else {
-                        echo "Maven já instalado em: ${mavenHome}"
+                        echo "Node já instalado em: ${nodeHome}"
                     }
                 }
             }
@@ -56,7 +56,32 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
+        stage('Deploy to EC2 - Front 1') {
+            steps {
+                script {
+                    //def remoteHost = '<IP-DA-EC2>'
+                    def remoteHost = '3.87.160.16'
+                    // def remoteUser = 'ec2-user'
+                    def remoteUser = 'ec2-user'
+                    //def keyPath = '/path/to/private/key.pem'
+                    def keyPath =  '/var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem'
+                    //def remoteDir = '~/apl-back-zup'
+                    def remoteDir = '/root/apl-back-zup'
+
+                    // Altera as permissões da chave
+                   // sh "chmod 600 ${keyPath}"
+
+                   sh """
+                   ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c "cd ${remoteDir} && git fetch && git pull"'
+                   """
+
+//sh "ssh -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
+                    //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
+                }
+            }
+        }
+
+        stage('Deploy to EC2 - Front 2') {
             steps {
                 script {
                     //def remoteHost = '<IP-DA-EC2>'
