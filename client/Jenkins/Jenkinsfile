@@ -9,14 +9,14 @@ pipeline {
 
     stages {
     stage('Install Node.js') {
-        echo "Entrei aqui"
+        //echo "Entrei aqui"
         steps {
             script {
                 def nodeVersion = '14.17.6'
                 def nodeHome = tool 'NodeJS_Installation' ?: ''
                 def nodeInstallDir = "${WORKSPACE}/nodejs"
 
-                echo("Antes do IF  ${nodeVersion} ${nodeHome} ${nodeInstallDir} ")
+               // echo("Antes do IF  ${nodeVersion} ${nodeHome} ${nodeInstallDir} ")
 
                 if (nodeHome == '') {
                     echo "Node.js não encontrado. Baixando e instalando..."
