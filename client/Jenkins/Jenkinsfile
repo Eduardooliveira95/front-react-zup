@@ -13,7 +13,7 @@ pipeline {
         steps {
             script {
                 def nodeVersion = '14.17.6'
-                def nodeHome = tool 'NodeJS_Installation' ?: ''
+                def nodeHome = tool 'Node_Zup' ?: ''
                 def nodeInstallDir = "${WORKSPACE}/nodejs"
 
                // echo("Antes do IF  ${nodeVersion} ${nodeHome} ${nodeInstallDir} ")
