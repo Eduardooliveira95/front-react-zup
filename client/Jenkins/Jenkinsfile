@@ -4,43 +4,38 @@ pipeline {
     agent any
 
     tools {
-        maven 'Node_Zup'
+        nodejs 'Node_Zup'
     }
 
     stages {
-        stage('Install NodeJs') {
-            steps {
-                script {
-                    // Verifica se o Maven já está instalado
-                    def nodeHome = tool 'Node_Zup' ?: ''
-                    def nodeVersion = '21.2.0'
+    stage('Install Node.js') {
+        steps {
+            script {
+                def nodeVersion = '14.17.6'
+                def nodeHome = tool 'NodeJS_Installation' ?: ''
+                def nodeInstallDir = "${WORKSPACE}/nodejs"
 
-                    if (nodeHome == '') {
-                        echo "Node não encontrado. Baixando e instalando..."
+                if (nodeHome == '') {
+                    echo "Node.js não encontrado. Baixando e instalando..."
 
-                        // Baixa o Node
-                        sh "curl -sL http://apache.mirror.gtcomm.net/maven/maven-3/${nodeVersion}/binaries/apache-maven-${nodeVersion}-bin.tar.gz -o maven.tar.gz"
+                    // Baixa o Node.js
+                    sh "curl -sL https://nodejs.org/dist/v${nodeVersion}/node-v${nodeVersion}-linux-x64.tar.xz -o node.tar.xz"
 
-                        // Extrai o Node
-                        sh 'tar -xf maven.tar.gz'
+                    // Extrai o Node.js
+                    sh "tar -xf node.tar.xz -C ${nodeInstallDir}"
 
-                        // Renomeia a pasta extraída para facilitar o acesso
-                        sh "mv apache-maven-${nodeVersion} maven"
+                    // Adiciona o Node.js ao PATH
+                    env.PATH = "${nodeInstallDir}/bin:${env.PATH}"
 
-                        // Define a variável M2_HOME
-                        env.M2_HOME = "${WORKSPACE}/maven"
-
-                        // Adiciona o Maven ao PATH
-                        env.PATH = "${env.M2_HOME}/bin:${env.PATH}"
-
-                        // Configura o Maven
-                        sh 'node -version'
-                    } else {
-                        echo "Node já instalado em: ${nodeHome}"
-                    }
+                    // Configura o Node.js
+                    sh 'node --version'
+                    sh 'npm --version'
+                } else {
+                    echo "Node.js já instalado em: ${nodeHome}"
                 }
             }
         }
+    }
 
         stage('Checkout') {
             steps {
@@ -51,7 +46,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean package'
+                    sh 'npm install'
                 }
             }
         }
