@@ -74,10 +74,10 @@ pipeline {
                    """
 
                    // Encerra a aplicação anterior (se existir)
-                    sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'pkill -f \"npm start\"' || true"
+                    //sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'pkill -f \"npm start\"' || true"
                     
 
-                    sh "ssh -o StrictHostKeyChecking=no -i ${keyPath} ${remoteUser}@${remoteHost} 'cd ${remoteDir} && npm start'"
+                    //sh "ssh -o StrictHostKeyChecking=no -i ${keyPath} ${remoteUser}@${remoteHost} 'cd ${remoteDir} && npm start'"
                     
 //sh "ssh -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
                     //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
