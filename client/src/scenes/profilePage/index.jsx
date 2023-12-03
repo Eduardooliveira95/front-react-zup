@@ -18,7 +18,7 @@ const ProfilePage = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(`https://44.219.155.152:8443/usuario/${userId}`);
+      const response = await axios.get(`https://34.234.121.203:8443/usuario/${userId}`);
       setUser(response.data);
     } catch (error) {
       console.log('Erro ao obter o usuário:', error);

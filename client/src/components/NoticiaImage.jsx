@@ -8,7 +8,7 @@ const NoticiaImage = ({ size = "60px" }) => {
   useEffect(() => {
     const fetchNoticiaImage = async () => {
       try {
-        const response = await axios.get("https://44.219.155.152:8443/noticia/rss/gazeta", {
+        const response = await axios.get("https://34.234.121.203:8443/noticia/rss/gazeta", {
           responseType: "arraybuffer",
         });
 

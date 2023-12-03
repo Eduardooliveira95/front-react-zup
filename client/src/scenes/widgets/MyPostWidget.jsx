@@ -43,7 +43,7 @@ const MyPostWidget = ({ idNoticia, comentarios, setComentarios }) => {
     };
 
     try {
-      const response = await axios.post(`https://44.219.155.152:8443/noticia/comentarios/${id}/${idNoticia}`, data);
+      const response = await axios.post(`https://34.234.121.203:8443/noticia/comentarios/${id}/${idNoticia}`, data);
       const novoComentario = response.data.comentario;
       setComentarios([...comentarios, novoComentario]);
       setComentario('');

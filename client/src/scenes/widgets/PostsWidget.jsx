@@ -72,7 +72,7 @@ const PostsWidget = ({ }) => {
 
     try {
       const response = await axios.post(
-        "https://44.219.155.152:8443/noticia/rss/info",
+        "https://34.234.121.203:8443/noticia/rss/info",
         data
       );
       setResposta(response.data.resposta);
@@ -88,7 +88,7 @@ const PostsWidget = ({ }) => {
   const getPost = async () => {
     try {
       const response = await axios.get(
-        "https://44.219.155.152:8443/admin/filaPilha/noticias"
+        "https://34.234.121.203:8443/admin/filaPilha/noticias"
       );
       setPostagens(response.data);
     } catch (error) {
@@ -99,7 +99,7 @@ const PostsWidget = ({ }) => {
   const patchLike = async (id) => {
     try {
       const response = await axios.post(
-        `https://44.219.155.152:8443/noticia/likes/${idUser}/${id}`,
+        `https://34.234.121.203:8443/noticia/likes/${idUser}/${id}`,
         {
           likes: 1
         }

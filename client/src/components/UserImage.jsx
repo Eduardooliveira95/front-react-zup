@@ -10,7 +10,7 @@ const UserImage = ({ size = "60px" }) => {
   useEffect(() => {
     const fetchUserImage = async () => {
       try {
-        const response = await axios.get(`https://44.219.155.152:8443/usuario/foto/${id}`, {
+        const response = await axios.get(`https://34.234.121.203:8443/usuario/foto/${id}`, {
           responseType: "arraybuffer", 
         });
 
