@@ -58,7 +58,7 @@ pipeline {
             steps {
                 script {
                     //def remoteHost = '<IP-DA-EC2>'
-                    def remoteHost = '44.206.238.230'
+                    def remoteHost = '54.146.182.11'
                     // def remoteUser = 'ec2-user'
                     def remoteUser = 'ec2-user'
                     //def keyPath = '/path/to/private/key.pem'
@@ -89,13 +89,13 @@ pipeline {
             steps {
                  script {
                      //def remoteHost = '<IP-DA-EC2>'
-                     def remoteHost = '3.87.160.16'
-                     // def remoteUser = 'ec2-user'
-                     def remoteUser = 'ec2-user'
-                     //def keyPath = '/path/to/private/key.pem'
-                     def keyPath =  '/var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem'
-                     //def remoteDir = '~/apl-back-zup'
-                     def remoteDir = '/root/apl-back-zup'
+                    def remoteHost = '3.212.4.139'
+                    // def remoteUser = 'ec2-user'
+                    def remoteUser = 'ec2-user'
+                    //def keyPath = '/path/to/private/key.pem'
+                    def keyPath =  '/var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem'
+                    //def remoteDir = '~/apl-back-zup'
+                    def remoteDir = '/home/ec2-user/version-prod-front/client'
 
                      // Altera as permissões da chave
                     // sh "chmod 600 ${keyPath}"
