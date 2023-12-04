@@ -101,6 +101,10 @@ pipeline {
                     // sh "chmod 600 ${keyPath}"
 
                     sh """
+                    git config --global --add safe.directory /home/ec2-user/version-prod-front
+                    """
+
+                    sh """
                     ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c "cd ${remoteDir} && git fetch && git pull"'
                     """
 
